@@ -1,0 +1,47 @@
+{
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.3",
+    "@symfony/webpack-encore": "^5.0.0",
+    "autoprefixer": "^10.4.20",
+    "babel-loader": "^9.2.1",
+    "core-js": "^3.38.0",
+    "postcss": "^8.4.49",
+    "postcss-loader": "^8.1.0",
+    "regenerator-runtime": "^0.13.9",
+    "tailwindcss": "^3.4.17",
+    "ts-loader": "^9.0.0",
+    "typescript": "^5.7.3",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-notifier": "^1.15.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.4",
+    "@radix-ui/react-dropdown-menu": "^2.1.4",
+    "@radix-ui/react-form": "^0.1.1",
+    "@radix-ui/react-tooltip": "^1.1.6",
+    "antd": "^5.23.0",
+    "axios": "^1.7.9",
+    "jwt-decode": "^4.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.1.1",
+    "react-router-dom": "^7.1.1"
+  }
+}

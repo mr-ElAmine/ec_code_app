@@ -1,10 +1,17 @@
-import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
-import './styles/app.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./pages/index.jsx"; // Import des routes
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+import "./styles/app.css"; // Styles globaux
+
+// Sélectionnez l'élément où React sera monté
+const rootElement = document.getElementById("root");
+
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement); // React 18
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
