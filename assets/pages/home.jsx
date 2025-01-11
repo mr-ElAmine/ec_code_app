@@ -1,8 +1,9 @@
 import React from "react";
-import Nav from "../composants/molecule/nav";
+import Nav from "../composants/molecule/Nav";
 import ReadingModal from "../composants/molecule/ReadingModal";
 import InProgressBooksTable from "../composants/molecule/InProgressBooksTable";
 import InFinishedBooksTable from "../composants/molecule/InFinishedBooksTable";
+import RadarChart from "../composants/molecule/RadarChart";
 
 export const Home = () => {
   return (
@@ -20,6 +21,7 @@ export const Home = () => {
             <InProgressBooksTable />
           </div>
           <InFinishedBooksTable />
+          <RadarChart />
         </div>
       </main>
     </div>
