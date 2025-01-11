@@ -9,8 +9,7 @@ const RegisterForm = () => {
 
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post("/api/register", values);
-      console.log("Registration successful:", response.data);
+      await axios.post("/api/register", values);
       setError(null);
       setSuccess("Account created successfully! You can now log in.");
       form.resetFields();

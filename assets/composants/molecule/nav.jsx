@@ -5,18 +5,16 @@ import { AuthContext } from "../../contexts/AuthContext";
 const { Header } = Layout;
 
 const Nav = () => {
-  const { logout, user } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   return (
     <Layout>
       <Header className="flex items-center bg-blue-600">
         <div className="text-white font-bold text-xl mr-auto">Book App</div>
-        <div className="flex gap-5 items-center font-bold text-white">
-          {user.username}
-          <Button type="primary" size={50} danger onClick={logout}>
-            Logout
-          </Button>
-        </div>
+
+        <Button type="primary" shape="round" danger onClick={logout}>
+          Logout
+        </Button>
       </Header>
     </Layout>
   );

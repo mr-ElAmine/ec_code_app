@@ -35,7 +35,7 @@ class AuthController extends AbstractController
     }
     
     #[Route('/api/register', name: 'api_register', methods: ["POST"])]
-    public function register(Request $request): JsonResponse
+    public function Register(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -75,7 +75,7 @@ class AuthController extends AbstractController
     }
 
     #[Route('/api/login', name: 'api_login', methods: ["POST"])]
-    public function login(Request $request): JsonResponse
+    public function Login(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 

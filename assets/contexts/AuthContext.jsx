@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [addReadBookEvent, setAddReadBookEvent] = useState(false);
 
   const isTokenExpired = (exp) => {
     const currentTime = Math.floor(Date.now() / 1000);
@@ -25,9 +26,16 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  useEffect(() => {
+    if (addReadBookEvent === true) {
+      setAddReadBookEvent(false);
+    }
+  }, [addReadBookEvent]);
+
   const login = (token) => {
     localStorage.setItem("token", token);
-    setUser({ token });
+    const decoded = jwtDecode(token);
+    setUser({ token, ...decoded });
   };
 
   const logout = () => {
@@ -36,7 +44,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+        addReadBookEvent,
+        setAddReadBookEvent,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

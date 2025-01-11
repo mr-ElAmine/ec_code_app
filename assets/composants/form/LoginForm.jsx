@@ -12,11 +12,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post("/api/login", values, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post("/api/login", values);
       const { token } = response.data;
       login(token);
       setError(null);
