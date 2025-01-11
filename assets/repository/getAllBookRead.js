@@ -1,11 +1,8 @@
 import axios from "axios";
 
-export async function getAllBookReadForUser(userEmail, token) {
+export async function getAllBookRead(token) {
   try {
-    const response = await axios.get("api/book/read/user", {
-      params: {
-        user_email: userEmail,
-      },
+    const response = await axios.get("/api/book/read/all", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -17,6 +14,10 @@ export async function getAllBookReadForUser(userEmail, token) {
       "Erreur lors de la récupération des livres lus :",
       error.response?.data || error.message
     );
-    throw error;
+
+    throw new Error(
+      error.response?.data?.message ||
+        "Erreur inconnue lors de la récupération des livres lus."
+    );
   }
 }

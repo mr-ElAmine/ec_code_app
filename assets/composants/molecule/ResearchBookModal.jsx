@@ -13,7 +13,6 @@ const ResearchBookModal = () => {
 
   const showModal = () => {
     if (!user?.token) {
-      message.warning("Veuillez vous connecter pour rechercher des livres.");
       return;
     }
     setIsModalVisible(true);
@@ -58,7 +57,9 @@ const ResearchBookModal = () => {
   };
 
   useEffect(() => {
-    if (isModalVisible) fetchBooks();
+    if (isModalVisible) {
+      fetchBooks();
+    }
   }, [isModalVisible]);
 
   return (

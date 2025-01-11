@@ -14,7 +14,7 @@ use App\Repository\CategoryRepository;
 
 class BookReadController extends AbstractController
 {
-    #[Route('/book/read/add', name: 'app_book_read_add', methods: ['POST'])]
+    #[Route('api//book/read/add', name: 'app_book_read_add', methods: ['POST'])]
     public function ReadAdd(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -53,7 +53,7 @@ class BookReadController extends AbstractController
         }
     }
 
-    #[Route('/book/read/update', name: 'app_book_read_update', methods: ['PUT'])]
+    #[Route('api/book/read/update', name: 'app_book_read_update', methods: ['PUT'])]
     public function updateBookRead(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -89,7 +89,7 @@ class BookReadController extends AbstractController
         }
     }
 
-    #[Route('/book/read/user', name: 'app_book_read_user', methods: ['GET'])]
+    #[Route('api/book/read/user', name: 'app_book_read_user', methods: ['GET'])]
     public function getBooksReadByUser(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): JsonResponse
     {
         $userEmail = $request->query->get('user_email');
@@ -131,4 +131,45 @@ class BookReadController extends AbstractController
             return new JsonResponse(['message' => 'Internal server error.', 'error' => $e->getMessage()], 500);
         }
     }
+
+    #[Route('api/book/read/all', name: 'app_book_read_all', methods: ['GET'])]
+    public function getAllReadBooks(EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): JsonResponse
+    {
+        try {
+            // Fetch all books and filter by isRead === true manually
+            $booksRead = $entityManager->getRepository(BookRead::class)->findAll();
+
+            $response = [];
+            foreach ($booksRead as $bookRead) {
+                // Check if isRead is true using the method or property
+                $isRead = method_exists($bookRead, 'isRead') ? $bookRead->isRead() : false;
+                if ($isRead) {
+                    $response[] = [
+                        'id' => $bookRead->getId(),
+                        'rating' => $bookRead->getRating(),
+                        'description' => $bookRead->getDescription(),
+                        'is_read' => $isRead,
+                        'cover' => $bookRead->getCover(),
+                        'created_at' => $bookRead->getCreatedAt()->format('Y-m-d H:i:s'),
+                        'updated_at' => $bookRead->getUpdatedAt()->format('Y-m-d H:i:s'),
+                        'book' => [
+                            'id' => $bookRead->getBook()->getId(),
+                            'name' => $bookRead->getBook()->getName(),
+                            'description' => $bookRead->getBook()->getDescription(),
+                            'category' => ($category = $categoryRepository->findOneBy(['id' => $bookRead->getBook()->getCategoryId()])) ? $category->getName() : null,
+                        ],
+                        'user' => [
+                            'id' => $bookRead->getUserId(),
+                            'email' => $entityManager->getRepository(User::class)->find($bookRead->getUserId())->getEmail(),
+                        ],
+                    ];
+                }
+            }
+
+            return new JsonResponse($response, 200);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => 'Internal server error.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
 }

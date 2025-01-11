@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function bookReadAdd(token, bookReadData) {
   try {
-    const response = await axios.post("/book/read/add", bookReadData, {
+    const response = await axios.post("api/book/read/add", bookReadData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

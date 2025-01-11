@@ -22,24 +22,22 @@ const InFinishedBooksTable = () => {
       key: "description",
     },
     {
-      title: "Category",
+      title: "Catégorie",
       dataIndex: "category",
       key: "category",
     },
     {
       title: "Actions",
       key: "actions",
-      render: (_, record) => {
-        return (
-          <UpdateReadingFormModal
-            bookReadId={record.id}
-            bookId={record.bookId}
-            notes={record.notes}
-            rating={record.rating}
-            isFinished={record.isRead}
-          />
-        );
-      },
+      render: (_, record) => (
+        <UpdateReadingFormModal
+          bookReadId={record.id}
+          bookId={record.bookId}
+          notes={record.notes}
+          rating={record.rating}
+          isFinished={record.isRead}
+        />
+      ),
     },
   ];
 
@@ -50,8 +48,8 @@ const InFinishedBooksTable = () => {
       if (user?.username && user?.token) {
         const data = await getAllBookReadForUser(user.username, user.token);
 
-        const unreadBooks = data
-          .filter((bookRead) => !bookRead.is_read)
+        const finishedBooks = data
+          .filter((bookRead) => bookRead.is_read)
           .map((bookRead, index) => ({
             key: `${bookRead.book.name}-${index}`,
             updatedAt: bookRead.updated_at,
@@ -64,11 +62,14 @@ const InFinishedBooksTable = () => {
             isRead: bookRead.is_read,
             category: bookRead.book.category,
           }));
-        setBooks(unreadBooks);
+        setBooks(finishedBooks);
       }
     } catch (err) {
       console.error("Error fetching books:", err);
-      setError(err.response?.data?.message || "Une erreur s'est produite.");
+      setError(
+        err.response?.data?.message ||
+          "Une erreur s'est produite lors de la récupération des livres."
+      );
     } finally {
       setLoading(false);
     }
@@ -78,12 +79,8 @@ const InFinishedBooksTable = () => {
     fetchBooks();
   }, [user?.username, user?.token, addReadBookEvent]);
 
-  useEffect(() => {
-    console.log(addReadBookEvent);
-  }, [addReadBookEvent]);
-
   if (loading) {
-    return <Spin tip="Chargement des livres en cours..." />;
+    return <Spin tip="Chargement des livres terminés..." />;
   }
 
   if (error) {
@@ -100,7 +97,7 @@ const InFinishedBooksTable = () => {
   if (books.length === 0) {
     return (
       <div className="flex justify-center items-center w-full border-2 rounded-lg bg-gray-50">
-        <Empty description="Aucun livre en cours de lecture" />
+        <Empty description="Aucun livre terminé trouvé" />
       </div>
     );
   }
@@ -110,7 +107,7 @@ const InFinishedBooksTable = () => {
       columns={columns}
       dataSource={books}
       bordered
-      title={() => "Livres en cours de lecture"}
+      title={() => "Livres terminés"}
       className="w-full shadow-md"
       pagination={false}
     />
